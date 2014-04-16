@@ -176,3 +176,4 @@ void BinTree::inOrderHelper(Node* current)const
 	if(current->right != NULL)
 		inOrderHelper(current->right);
 }
+i added something
