@@ -96,6 +96,23 @@ private:
 		NodeData* data;
 		Node* left;
 		Node* right;
+		//------------------------------  ==  -------------------------------------
+    	// Determine if Nodes are equal.
+    	// Preconditions:   none
+    	// Postconditions:  true is returned if the Nodes are exactly
+    	//                    the same, false is return otherwise
+		friend bool operator==(Node const& lhs, Node const& rhs)
+		{
+			return *lhs.data == *rhs.data
+			//both left nodes are null
+			&& ((lhs.left == NULL && rhs.left == NULL)	
+			//both left nodes are not null, check for same members
+			|| (lhs.left != NULL && rhs.left != NULL && *lhs.left == *rhs.left)) 
+			//both right nodes are null
+			&& ((lhs.right == NULL && rhs.right == NULL)
+			//both right nodes are not null, check for same members
+			|| (lhs.right != NULL && rhs.right != NULL && *lhs.right == *rhs.right));
+		}
 	};
 	Node* root;
 	void inOrderHelper(Node*)const;
@@ -103,6 +120,8 @@ private:
 	void sideways(Node*, int)const;
 	void reclaim(Node*&);
 	int arrayBuilder(int, Node*, NodeData* []);
+	void ptrSwap(NodeData*, NodeData*);
+	BinTree::Node* treeBuilder(NodeData*[],int,int);
 	NodeData* retrieveHelper(const NodeData&, Node*)const;
 
 };

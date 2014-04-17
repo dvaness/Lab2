@@ -18,7 +18,7 @@ int main()
    	}
 
 
-	BinTree tree1;
+	BinTree tree1,tree2;
 	NodeData notND("not");
    	NodeData andND("and");
    	NodeData sssND("sss");
@@ -29,16 +29,29 @@ int main()
 	NodeData* ndArray[ARRAY_SIZE];
 	initArray(ndArray);
 	buildTree(tree1, infile);
+  buildTree(tree2, infile);
 	cout << endl;
 	if(tree1.isEmpty())
 		cout << "The tree is empty!" << endl;
 	tree1.displaySideways();
+  cout << endl << "-------------" << endl;
+  tree2.displaySideways();
 
-	cout << "In order: " << endl << "-----------" << endl;
+	cout << "tree1.In order: " << endl << "-----------" << endl;
 	tree1.printInOrder();
 	cout << "-----------" << endl;
+  cout << "tree2.In order: " << endl << "-----------" << endl;
+  tree2.printInOrder();
+  cout << "-----------" << endl;
+  if(tree1 != tree2)
+    cout << "tree1 is not equal to tree2!" << endl;
+  else
+    cout << "tree1 is equal to tree2!" << endl;
 	tree1.bstreeToArray(ndArray);
 	printArray(ndArray);
+  tree1.arrayToBSTree(ndArray);
+  tree1.displaySideways();
+  tree1.printInOrder();
   if(tree1.isEmpty())
     cout << "The tree is empty!" << endl;
   else

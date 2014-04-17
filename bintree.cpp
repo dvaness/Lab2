@@ -146,6 +146,25 @@ NodeData* BinTree::retrieveHelper(const NodeData& toFind, Node* current)const
 	
 }
 
+void BinTree::arrayToBSTree(NodeData* theArray[])
+{
+	treeBuilder(theArray, 0,100);
+}
+
+BinTree::Node* BinTree::treeBuilder(NodeData* theArray[], int start, int end)
+{
+	if(start > end)
+		return NULL;
+	int mid = start + (end - start) / 2;
+	if(theArray[mid] != NULL)
+	{
+		root->data = theArray[mid];
+		root->left = treeBuilder(theArray, start, mid-1);
+		root->right = treeBuilder(theArray, mid+1, end);	
+	}
+	
+}
+
 void BinTree::bstreeToArray(NodeData* anArray[])
 {
 	arrayBuilder(0,root,anArray);
@@ -157,10 +176,41 @@ int BinTree::arrayBuilder(int index, Node* current, NodeData* theArray[])
 	if(current->left != NULL)
 		index = arrayBuilder(index,current->left,theArray);
 	//cout <<"inserting " << *current->data << " into index " << index << endl;
+	//ptrSwap(current->data, theArray[index++]);
 	theArray[index++] = current->data;
+	//current->data = NULL;
 	if(current->right != NULL)
 		index = arrayBuilder(index, current->right, theArray);	
 	return index;
+}
+
+void BinTree::ptrSwap(NodeData* lhs, NodeData* rhs)
+{
+	//lhs: theArray[index++]
+	//rhs: current->data
+	//tmp: NULL
+	NodeData* tmp = NULL;
+	// if(lhs == NULL)
+	// 	cout << "left hand side in swap: NULL" << endl;	
+	// else
+	// 	cout << "left hand side in swap: " << *lhs << endl;
+
+	// if(rhs == NULL)
+	// 	cout << "right hand side in swap: NULL" << endl;	
+	// else
+	// 	cout << "right hand side in swap: " << *rhs << endl;
+	// if(tmp == NULL)
+	// 	cout << "tmp in swap: NULL" << endl;	
+	// else
+	// 	cout << "tmp in swap: " << *tmp << endl;
+	// cout << "------------------------------" << endl;
+	tmp = lhs;
+	//tmp = theArray[index++](NULL)
+	lhs = rhs;
+	//lhs = current->data
+	rhs = tmp;
+	//current->data = theArray[index++](NULL)
+
 }
 
 void BinTree::printInOrder()const
@@ -176,3 +226,28 @@ void BinTree::inOrderHelper(Node* current)const
 	if(current->right != NULL)
 		inOrderHelper(current->right);
 }
+//------------------------------  ==  -------------------------------------
+// Determine if two binary search trees are equal.
+// Preconditions:   ptr and right.ptr point to BinTrees with
+//                    at least one non-null member each
+// Postconditions:  true is returned if the BinTrees have the exact
+//                    same members and structure,
+//					  false is return otherwise
+bool BinTree::operator==(const BinTree& rhs)const
+{
+	return(root == NULL && rhs.root == NULL)
+		   ||(root != NULL && rhs.root != NULL && 
+		   	  *root->data == *rhs.root->data);
+}
+//------------------------------  !=  -------------------------------------
+// Determine if two binary search trees are unequal.
+// Preconditions:   ptr and right.ptr point to BinTrees with
+//                    at least one non-null member each
+// Postconditions:  true is returned if the BinTrees have any of the
+//                    same members, false is return otherwise
+bool BinTree::operator!=(const BinTree& rhs)const
+{
+	return !(*this == rhs);
+}
+
+
