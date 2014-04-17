@@ -39,16 +39,20 @@ int main()
 	cout << "-----------" << endl;
 	tree1.bstreeToArray(ndArray);
 	printArray(ndArray);
+  if(tree1.isEmpty())
+    cout << "The tree is empty!" << endl;
+  else
+    cout << "the tree is still populated!" << endl;
 
-	/*
+	
 	NodeData* p;                    // pointer of retrieved object
-    bool found;                     // whether or not object was found in tree
-    found = tree1.retrieve(andND, p); 
-    cout << "Retrieve --> and:  " << (found ? "found":"not found") << endl;
-    found = tree1.retrieve(notND, p);
-    cout << "Retrieve --> not:  " << (found ? "found":"not found") << endl;
-    found = tree1.retrieve(sssND, p);
-    cout << "Retrieve --> sss:  " << (found ? "found":"not found") << endl;*/
+  bool found;                     // whether or not object was found in tree
+  found = tree1.retrieve(andND, p); 
+  cout << "Retrieve --> and:  " << (found ? "found":"not found") << endl;
+  found = tree1.retrieve(notND, p);
+  cout << "Retrieve --> not:  " << (found ? "found":"not found") << endl;
+  found = tree1.retrieve(sssND, p);
+  cout << "Retrieve --> sss:  " << (found ? "found":"not found") << endl;
 
 	return 0;
 }
@@ -89,7 +93,7 @@ void printArray(NodeData* theArray[])
 	for(int i = 0; i < ARRAY_SIZE; i++)
 	{
 		if(theArray[i] == NULL)
-			continue;
-		cout << *theArray[i] << endl;
+      break;
+		  cout << *theArray[i] << endl;
 	}
 }

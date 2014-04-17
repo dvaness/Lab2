@@ -29,6 +29,7 @@ class BinTree
 {
 public:
 	friend ostream& operator<<(ostream&, const BinTree&);
+	void printHelper(ostream&)const;
 	//-------------------------- Constructor ----------------------------------
     // Default constructor for class BinTree
     // Preconditions:   None
@@ -98,8 +99,9 @@ private:
 	};
 	Node* root;
 	void inOrderHelper(Node*)const;
+	void printTree(ostream&, Node*)const;
 	void sideways(Node*, int)const;
-	void reclaim(Node*);
+	void reclaim(Node*&);
 	int arrayBuilder(int, Node*, NodeData* []);
 	NodeData* retrieveHelper(const NodeData&, Node*)const;
 

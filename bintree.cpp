@@ -13,25 +13,43 @@ BinTree::BinTree()
 
 BinTree::~BinTree()
 {
+	makeEmpty();
+}
+
+void BinTree::makeEmpty()
+{
 	reclaim(root);
 }
 
-void BinTree::reclaim(Node* current)
+void BinTree::reclaim(Node*& current)
 {
-	if(current != NULL && current->data != NULL)
+	if(current)
 	{
 		reclaim(current->left);
 		reclaim(current->right);
-		delete current;
 		delete current->data;
-		current->data = NULL;
-		current = NULL;
+		delete current;
 	}
 }
-
 ostream& operator<<(ostream& out, const BinTree& toOut)
 {
+	toOut.printHelper(out);
+	return out;
+}
 
+void BinTree::printHelper(ostream& out)const
+{
+	printTree(out, root);
+}
+
+void BinTree::printTree(ostream& out, Node* current)const
+{
+	if(current)
+	{
+		printTree(out, current->left);
+		out << *current->data << endl;
+		printTree(out, current->right);
+	}
 }
 
 bool BinTree::isEmpty()const
@@ -108,18 +126,24 @@ bool BinTree::insert(NodeData* dataptr)
 
 bool BinTree::retrieve(const NodeData& toFind, NodeData*& retNode)const
 {
-	retNode = retrieveHelper(toFind,root);
-	return retNode == NULL;
+	retNode = retrieveHelper(toFind, root);
+	return retNode != NULL;
 }
 
 NodeData* BinTree::retrieveHelper(const NodeData& toFind, Node* current)const
 {
-	if(toFind < *current->data)
-		retrieveHelper(toFind, current->left);
-	else if(toFind > *current->data)
-		retrieveHelper(toFind, current->right);
+	if(current != NULL)
+	{
+		if(*current->data == toFind)
+			return current->data;
+		if(toFind < *current->data)
+			return retrieveHelper(toFind, current->left);
+		else
+			return retrieveHelper(toFind, current->right);
+	}
 	else
-		return current->data;
+		return NULL;
+	
 }
 
 void BinTree::bstreeToArray(NodeData* anArray[])
