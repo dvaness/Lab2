@@ -124,43 +124,19 @@ NodeData* BinTree::retrieveHelper(const NodeData& toFind, Node* current)const
 
 void BinTree::bstreeToArray(NodeData* anArray[])
 {
-	// Node* parent = NULL;
-	// Node* current = root;
-	// int currentIndex = 0;
-	// while(current->left != NULL)
-	// {
-	// 	parent = current;
-	// 	current = current->left;
-	// }
-	// cout << *current->data << endl;
-	// cout << *parent->data << endl;
-	// cout << *parent->right->data << endl;
-	// //anArray[currentIndex] = parent->data;
-	// //currentIndex++;
-	// //parent = current->right;
-	// parent = NULL;
-	// current = root;
-
-	// while(current->right != NULL)
-	// {
-	// 	//anArray[currentIndex] = current->data;
-	// 	parent = current;
-	// 	current = current->right;
-	// }
-	// cout << *parent->left->data << endl;
-	// cout << *parent->data << endl;
-	// cout << *current->data << endl;
 	arrayBuilder(0,root,anArray);
 }
 
-void BinTree::arrayBuilder(int index, Node* current, NodeData* theArray[])
+int BinTree::arrayBuilder(int index, Node* current, NodeData* theArray[])
 {
-	cout <<"current in array builder: " << *current->data << endl;
+	
 	if(current->left != NULL)
-		arrayBuilder(index,current->left,theArray);
+		index = arrayBuilder(index,current->left,theArray);
+	//cout <<"inserting " << *current->data << " into index " << index << endl;
 	theArray[index++] = current->data;
 	if(current->right != NULL)
-		arrayBuilder(index, current->right, theArray);
+		index = arrayBuilder(index, current->right, theArray);	
+	return index;
 }
 
 void BinTree::printInOrder()const
@@ -176,4 +152,3 @@ void BinTree::inOrderHelper(Node* current)const
 	if(current->right != NULL)
 		inOrderHelper(current->right);
 }
-i added something

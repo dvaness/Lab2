@@ -100,7 +100,7 @@ private:
 	void inOrderHelper(Node*)const;
 	void sideways(Node*, int)const;
 	void reclaim(Node*);
-	void arrayBuilder(int, Node*, NodeData* []);
+	int arrayBuilder(int, Node*, NodeData* []);
 	NodeData* retrieveHelper(const NodeData&, Node*)const;
 
 };
