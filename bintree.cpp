@@ -149,6 +149,10 @@ NodeData* BinTree::retrieveHelper(const NodeData& toFind, Node* current)const
 void BinTree::arrayToBSTree(NodeData* theArray[])
 {
 	treeBuilder(theArray, 0,100);
+	for(int i = 0; i < 100; i++)
+	{
+		theArray[i] = NULL;
+	}
 }
 
 BinTree::Node* BinTree::treeBuilder(NodeData* theArray[], int start, int end)
