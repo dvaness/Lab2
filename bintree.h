@@ -48,6 +48,11 @@ public:
     // Postconditions:
     // 	  -- all memory allocated by the calling object is returned to the OS
 	~BinTree();
+	//------------------------------  makeEmpty  ------------------------------
+	// Return all allocated memory to the OS
+	// Preconditions:   none
+	// Postconditions:  all memory is returned to the OS
+	void makeEmpty();
 	//-----------------------------  =  ---------------------------------------
     // Overloaded assignment operator
     // Preconditions:   right.ptr points to a BinTree object with at least one
@@ -82,12 +87,48 @@ public:
     //					been created and initalized
     // Postconditions:  returns true if sucessfully inserted, false if not
 	bool insert(NodeData*);
+	//------------------------------  getDepth  -------------------------------
+	// Find the depth of a specific NodeData item from the BinTree
+	// Preconditions:   the NodeData& parameter has been created and
+	//					initialized
+	// Postconditions:  returns the depth of the given NodeData item, with
+	//					the root being at level 1.
 	int getDepth(const NodeData&)const;
+	//------------------------------  bstreeToArray  --------------------------
+	// Convert the calling BinTree object to a sorted array of NodeData*'s
+	// Preconditions:   the array is expected to be of size 100 and be full of
+	//					NULLs
+	// Postconditions:  The array passed is filled with the contents of the
+	//					calling BinTree object.
+	//					NOTE: The calling BinTree object currently is
+	//					uneffected by this method. Needs to be changed to
+	//					be empty after conversion to an array.
 	void bstreeToArray(NodeData*[]);
+	//------------------------------  arrayToBSTree  --------------------------
+	// Convert the calling BinTree object to be filled with the contents of the
+	// array passed in.
+	// Preconditions:
+	// Postconditions:  The calling BinTree object is filled with the contents
+	//					of the parameterized array
+	//					NOTE: The parameterized array currently is
+	//					uneffected by this method. Needs to be changed to
+	//					be empty after conversion to a BinTree.
 	void arrayToBSTree(NodeData*[]);
+	//------------------------------  displaySideways  ------------------------
+	// Print the calling BinTree object "on its side"
+	// Preconditions:   none
+	// Postconditions:  none
 	void displaySideways()const;
+	//------------------------------  isEmpty  --------------------------------
+	// Print the calling BinTree object "on its side"
+	// Preconditions:   none
+	// Postconditions:  returns true if the tree is empty, false if not.
 	bool isEmpty()const;
-	void makeEmpty();
+
+	//------------------------------  printInOrder  ---------------------------
+	// Print the result of a in-order depth first traversal
+	// Preconditions:   none
+	// Postconditions:  none
 	void printInOrder()const;
 
 private:
@@ -96,7 +137,7 @@ private:
 		NodeData* data;
 		Node* left;
 		Node* right;
-		//------------------------------  ==  -------------------------------------
+		//------------------------------  ==  ---------------------------------
     	// Determine if Nodes are equal.
     	// Preconditions:   none
     	// Postconditions:  true is returned if the Nodes are exactly
@@ -115,14 +156,45 @@ private:
 		}
 	};
 	Node* root;
+	//------------------------------  inOrderHelper  --------------------------
+	// Helper method for the printInOrder method
+	// Preconditions:   none
+	// Postconditions:  none
 	void inOrderHelper(Node*)const;
-	void printTree(ostream&, Node*)const;
+	//------------------------------  sideways  -------------------------------
+	// Helper method for the displaySideways method
+	// Preconditions:   none
+	// Postconditions:  none
 	void sideways(Node*, int)const;
+	//------------------------------  reclaim  --------------------------------
+	// Helper method for the makeEmpty method
+	// Preconditions:   none
+	// Postconditions:  none
 	void reclaim(Node*&);
+	//------------------------------  arrayBuilder  --------------------------
+	// Helper method for the bstreeToArray method
+	// Preconditions:   none
+	// Postconditions:  none
 	int arrayBuilder(int, Node*, NodeData* []);
-	void ptrSwap(NodeData*, NodeData*);
+	//------------------------------  treeBuilder  --------------------------
+	// Helper method for the arrayToBSTree method
+	// Preconditions:   none
+	// Postconditions:  none
 	BinTree::Node* treeBuilder(NodeData*[],int,int);
+	//------------------------------  retrieveHelper  -------------------------
+	// Helper method for the retrieve method
+	// Preconditions:   none
+	// Postconditions:  none
 	NodeData* retrieveHelper(const NodeData&, Node*)const;
+	//------------------------------  depthHelper  ----------------------------
+	// Helper method for the getDepth method
+	// Preconditions:   none
+	// Postconditions:  none
+	int depthHelper(const NodeData&, Node*, int)const;
+	//------------------------------  non-functional  -------------------------
+	void printTree(ostream&, Node*)const;
+	void ptrSwap(NodeData*, NodeData*);
+
 
 };
 #endif

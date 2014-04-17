@@ -10,17 +10,27 @@ BinTree::BinTree()
 {
 	root = NULL;
 }
-
+//-------------------------- Destructor -----------------------------------
+// Destructor for class BinTree
+// Preconditions:   None
+// Postconditions:
+// 	  -- all memory allocated by the calling object is returned to the OS
 BinTree::~BinTree()
 {
 	makeEmpty();
 }
-
+//------------------------------  makeEmpty  ------------------------------
+// Return all allocated memory to the OS
+// Preconditions:   none
+// Postconditions:  all memory is returned to the OS
 void BinTree::makeEmpty()
 {
 	reclaim(root);
 }
-
+//------------------------------  reclaim  --------------------------------
+// Helper method for the makeEmpty method
+// Preconditions:   none
+// Postconditions:  none
 void BinTree::reclaim(Node*& current)
 {
 	if(current)
@@ -31,37 +41,27 @@ void BinTree::reclaim(Node*& current)
 		delete current;
 	}
 }
-ostream& operator<<(ostream& out, const BinTree& toOut)
-{
-	toOut.printHelper(out);
-	return out;
-}
 
-void BinTree::printHelper(ostream& out)const
-{
-	printTree(out, root);
-}
-
-void BinTree::printTree(ostream& out, Node* current)const
-{
-	if(current)
-	{
-		printTree(out, current->left);
-		out << *current->data << endl;
-		printTree(out, current->right);
-	}
-}
-
+//------------------------------  isEmpty  --------------------------------
+// Print the calling BinTree object "on its side"
+// Preconditions:   none
+// Postconditions:  returns true if the tree is empty, false if not.
 bool BinTree::isEmpty()const
 {
 	return root == NULL;
 }
-
+//------------------------------  displaySideways  ------------------------
+// Print the calling BinTree object "on its side"
+// Preconditions:   none
+// Postconditions:  none
 void BinTree::displaySideways()const
 {
 	sideways(root, 0);
 }
-
+//------------------------------  sideways  -------------------------------
+// Helper method for the displaySideways method
+// Preconditions:   none
+// Postconditions:  none
 void BinTree::sideways(Node* current, int level)const
 {
 	if(current != NULL)
@@ -75,7 +75,11 @@ void BinTree::sideways(Node* current, int level)const
 		sideways(current->left, level);
 	}
 }
-
+//------------------------------  insert  -------------------------------
+// Insert a specific NodeData item into the BinTree
+// Preconditions:   the NodeData parameter that is being pointed to has
+//					been created and initalized
+// Postconditions:  returns true if sucessfully inserted, false if not
 bool BinTree::insert(NodeData* dataptr)
 {
 	Node* ptr = new Node;     // exception is thrown if memory is not allocated
@@ -123,13 +127,21 @@ bool BinTree::insert(NodeData* dataptr)
    }
    return true;
 }
-
+//------------------------------  retrieve  -------------------------------
+// Retrieve a specific NodeData item from the BinTree
+// Preconditions:   the NodeData*& parameter has been created and
+//					initialized
+// Postconditions:  returns the NodeData* as the NodeData*& provided as a
+//					parameter, returns NULL otherwise
 bool BinTree::retrieve(const NodeData& toFind, NodeData*& retNode)const
 {
 	retNode = retrieveHelper(toFind, root);
 	return retNode != NULL;
 }
-
+//------------------------------  retrieveHelper  -------------------------
+// Helper method for the retrieve method
+// Preconditions:   none
+// Postconditions:  none
 NodeData* BinTree::retrieveHelper(const NodeData& toFind, Node* current)const
 {
 	if(current != NULL)
@@ -145,7 +157,15 @@ NodeData* BinTree::retrieveHelper(const NodeData& toFind, Node* current)const
 		return NULL;
 	
 }
-
+//------------------------------  arrayToBSTree  --------------------------
+// Convert the calling BinTree object to be filled with the contents of the
+// array passed in.
+// Preconditions:
+// Postconditions:  The calling BinTree object is filled with the contents
+//					of the parameterized array
+//					NOTE: The parameterized array currently is
+//					uneffected by this method. Needs to be changed to
+//					be empty after conversion to a BinTree.
 void BinTree::arrayToBSTree(NodeData* theArray[])
 {
 	treeBuilder(theArray, 0,100);
@@ -154,7 +174,10 @@ void BinTree::arrayToBSTree(NodeData* theArray[])
 		theArray[i] = NULL;
 	}
 }
-
+//------------------------------  treeBuilder  --------------------------
+// Helper method for the arrayToBSTree method
+// Preconditions:   none
+// Postconditions:  none
 BinTree::Node* BinTree::treeBuilder(NodeData* theArray[], int start, int end)
 {
 	if(start > end)
@@ -168,12 +191,23 @@ BinTree::Node* BinTree::treeBuilder(NodeData* theArray[], int start, int end)
 	}
 	
 }
-
+//------------------------------  bstreeToArray  --------------------------
+// Convert the calling BinTree object to a sorted array of NodeData*'s
+// Preconditions:   the array is expected to be of size 100 and be full of
+//					NULLs
+// Postconditions:  The array passed is filled with the contents of the
+//					calling BinTree object.
+//					NOTE: The calling BinTree object currently is
+//					uneffected by this method. Needs to be changed to
+//					be empty after conversion to an array.
 void BinTree::bstreeToArray(NodeData* anArray[])
 {
 	arrayBuilder(0,root,anArray);
 }
-
+//------------------------------  arrayBuilder  --------------------------
+// Helper method for the bstreeToArray method
+// Preconditions:   none
+// Postconditions:  none
 int BinTree::arrayBuilder(int index, Node* current, NodeData* theArray[])
 {
 	
@@ -187,41 +221,18 @@ int BinTree::arrayBuilder(int index, Node* current, NodeData* theArray[])
 		index = arrayBuilder(index, current->right, theArray);	
 	return index;
 }
-
-void BinTree::ptrSwap(NodeData* lhs, NodeData* rhs)
-{
-	//lhs: theArray[index++]
-	//rhs: current->data
-	//tmp: NULL
-	NodeData* tmp = NULL;
-	// if(lhs == NULL)
-	// 	cout << "left hand side in swap: NULL" << endl;	
-	// else
-	// 	cout << "left hand side in swap: " << *lhs << endl;
-
-	// if(rhs == NULL)
-	// 	cout << "right hand side in swap: NULL" << endl;	
-	// else
-	// 	cout << "right hand side in swap: " << *rhs << endl;
-	// if(tmp == NULL)
-	// 	cout << "tmp in swap: NULL" << endl;	
-	// else
-	// 	cout << "tmp in swap: " << *tmp << endl;
-	// cout << "------------------------------" << endl;
-	tmp = lhs;
-	//tmp = theArray[index++](NULL)
-	lhs = rhs;
-	//lhs = current->data
-	rhs = tmp;
-	//current->data = theArray[index++](NULL)
-
-}
-
+//------------------------------  printInOrder  ---------------------------
+// Print the result of a in-order depth first traversal
+// Preconditions:   none
+// Postconditions:  none
 void BinTree::printInOrder()const
 {
 	inOrderHelper(root);
 }
-
+//------------------------------  inOrderHelper  --------------------------
+// Helper method for the printInOrder method
+// Preconditions:   none
+// Postconditions:  none
 void BinTree::inOrderHelper(Node* current)const
 {
 	if(current->left != NULL)
@@ -253,5 +264,82 @@ bool BinTree::operator!=(const BinTree& rhs)const
 {
 	return !(*this == rhs);
 }
+//------------------------------  getDepth  -------------------------------
+// Find the depth of a specific NodeData item from the BinTree
+// Preconditions:   the NodeData& parameter has been created and
+//					initialized
+// Postconditions:  returns the depth of the given NodeData item, with
+//					the root being at level 1.
+int BinTree::getDepth(const NodeData& toMeasure)const
+{
+	depthHelper(toMeasure, root, 1);
+}
+//------------------------------  depthHelper  ----------------------------
+// Helper method for the getDepth method
+// Preconditions:   none
+// Postconditions:  none
+int BinTree::depthHelper(const NodeData& toFind, Node* current, int level)const
+{
+	if(current == NULL)
+		return 0;
+	if(*current->data == toFind)
+		return level;
 
+	int level_down = depthHelper(toFind, current->left, level+1);
 
+	if(level_down != 0)
+		return level_down;
+
+	level_down = depthHelper(toFind, current->right, level+1);
+	return level_down;
+}
+//------------------------------  NON-FUNCTIONAL/USEFUL METHODS  --------------
+void BinTree::ptrSwap(NodeData* lhs, NodeData* rhs)
+{
+	//lhs: theArray[index++]
+	//rhs: current->data
+	//tmp: NULL
+	NodeData* tmp = NULL;
+	// if(lhs == NULL)
+	// 	cout << "left hand side in swap: NULL" << endl;
+	// else
+	// 	cout << "left hand side in swap: " << *lhs << endl;
+
+	// if(rhs == NULL)
+	// 	cout << "right hand side in swap: NULL" << endl;
+	// else
+	// 	cout << "right hand side in swap: " << *rhs << endl;
+	// if(tmp == NULL)
+	// 	cout << "tmp in swap: NULL" << endl;
+	// else
+	// 	cout << "tmp in swap: " << *tmp << endl;
+	// cout << "------------------------------" << endl;
+	tmp = lhs;
+	//tmp = theArray[index++](NULL)
+	lhs = rhs;
+	//lhs = current->data
+	rhs = tmp;
+	//current->data = theArray[index++](NULL)
+
+}
+
+ostream& operator<<(ostream& out, const BinTree& toOut)
+{
+	toOut.printHelper(out);
+	return out;
+}
+
+void BinTree::printHelper(ostream& out)const
+{
+	printTree(out, root);
+}
+
+void BinTree::printTree(ostream& out, Node* current)const
+{
+	if(current)
+	{
+		printTree(out, current->left);
+		out << *current->data << endl;
+		printTree(out, current->right);
+	}
+}

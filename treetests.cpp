@@ -67,6 +67,10 @@ int main()
   found = tree1.retrieve(sssND, p);
   cout << "Retrieve --> sss:  " << (found ? "found":"not found") << endl;
 
+  cout << "Depth    --> and:  " << tree1.getDepth(andND) << endl;
+  cout << "Depth    --> not:  " << tree1.getDepth(notND) << endl;
+  cout << "Depth    --> sss:  " << tree1.getDepth(sssND) << endl;
+
 	return 0;
 }
 
