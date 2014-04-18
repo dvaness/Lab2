@@ -10,6 +10,31 @@ BinTree::BinTree()
 {
 	root = NULL;
 }
+
+BinTree& BinTree::operator=(const BinTree& toCopy)
+{
+	if(&toCopy == this)
+		return *this;
+	//if(!isEmpty())
+		//makeEmpty();
+	copier(toCopy.root,root);
+}
+
+void BinTree::copier(Node* tree1, Node*& tree2)
+{
+	if(tree1 == NULL)
+	{
+		tree2 = NULL;
+	}
+
+	else
+	{
+		tree2 = new BinTree::Node;
+		*tree2->data = *tree1->data;
+		copier(tree1->left, tree2->left);
+		copier(tree1->right, tree2->right);
+	}
+}
 //-------------------------- Destructor -----------------------------------
 // Destructor for class BinTree
 // Preconditions:   None
@@ -25,20 +50,27 @@ BinTree::~BinTree()
 // Postconditions:  all memory is returned to the OS
 void BinTree::makeEmpty()
 {
-	reclaim(root);
+	delete root;
+	root = NULL;
 }
 //------------------------------  reclaim  --------------------------------
 // Helper method for the makeEmpty method
 // Preconditions:   none
 // Postconditions:  none
-void BinTree::reclaim(Node*& current)
+void BinTree::reclaim(Node* current)
 {
-	if(current)
+	if(current == NULL)
+	{
+		current = 0;
+	}
+	else
 	{
 		reclaim(current->left);
 		reclaim(current->right);
 		delete current->data;
+		current->data = NULL;
 		delete current;
+		current = NULL;
 	}
 }
 

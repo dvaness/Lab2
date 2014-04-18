@@ -137,6 +137,17 @@ private:
 		NodeData* data;
 		Node* left;
 		Node* right;
+		~Node()
+		{
+			delete data;
+			data = NULL;
+			delete left;
+			left = NULL;
+			delete right;
+			right = NULL;
+
+
+		}
 		//------------------------------  ==  ---------------------------------
     	// Determine if Nodes are equal.
     	// Preconditions:   none
@@ -170,7 +181,7 @@ private:
 	// Helper method for the makeEmpty method
 	// Preconditions:   none
 	// Postconditions:  none
-	void reclaim(Node*&);
+	void reclaim(Node*);
 	//------------------------------  arrayBuilder  --------------------------
 	// Helper method for the bstreeToArray method
 	// Preconditions:   none
@@ -191,6 +202,8 @@ private:
 	// Preconditions:   none
 	// Postconditions:  none
 	int depthHelper(const NodeData&, Node*, int)const;
+
+	void copier(Node*, Node*&);
 	//------------------------------  non-functional  -------------------------
 	void printTree(ostream&, Node*)const;
 	void ptrSwap(NodeData*, NodeData*);
