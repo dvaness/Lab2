@@ -18,7 +18,7 @@ int main()
    	}
 
 
-	BinTree tree1,tree2,tree3;
+	BinTree tree1,tree2;
 	NodeData notND("not");
    	NodeData andND("and");
    	NodeData sssND("sss");
@@ -30,7 +30,7 @@ int main()
 	initArray(ndArray);
 	buildTree(tree1, infile);
   buildTree(tree2, infile);
-	cout << endl;
+  cout << endl;
 	if(tree1.isEmpty())
 		cout << "The tree is empty!" << endl;
 	tree1.displaySideways();
@@ -43,13 +43,24 @@ int main()
 	cout << "tree2.In order: " << endl << "-----------" << endl;
 	tree2.printInOrder();
 	cout << "-----------" << endl;
+  /*
+  BinTree tree3(tree2);
+  cout << "tree3.In order: " << endl << "-----------" << endl;
+  tree3.displaySideways();
+  tree3.printInOrder();
+  cout << "-----------" << endl;*/
 	if(tree1 != tree2)
 		cout << "tree1 is not equal to tree2!" << endl;
 	else
 		cout << "tree1 is equal to tree2!" << endl;
 	tree1.bstreeToArray(ndArray);
+  if(tree1.isEmpty())
+    cout << "The tree is empty!" << endl;
+  else
+    cout << "the tree is still populated!" << endl;
 	printArray(ndArray);
 	tree1.arrayToBSTree(ndArray);
+  cout << "roots current data: " << *tree1.getRootData() << endl;
 	tree1.displaySideways();
 	tree1.printInOrder();
 	if(tree1.isEmpty())
@@ -71,10 +82,8 @@ int main()
   cout << "Depth    --> not:  " << tree1.getDepth(notND) << endl;
   cout << "Depth    --> sss:  " << tree1.getDepth(sssND) << endl;
 
-  tree3 = tree2;
-  cout << "tree3.In order: " << endl << "-----------" << endl;
-  tree3.printInOrder();
-  cout << "-----------" << endl;
+  //tree3 = tree2;
+  
 
 
   return 0;
@@ -113,10 +122,12 @@ void initArray(NodeData* theArray[])
 
 void printArray(NodeData* theArray[])
 {
+  cout << "The array" << endl << "---------" << endl;
 	for(int i = 0; i < ARRAY_SIZE; i++)
 	{
 		if(theArray[i] == NULL)
       break;
-		  cout << *theArray[i] << endl;
+		 cout << *theArray[i] << " ";
 	}
+  cout << endl;
 }

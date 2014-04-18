@@ -130,6 +130,8 @@ public:
 	// Preconditions:   none
 	// Postconditions:  none
 	void printInOrder()const;
+	NodeData* getRootData()const;
+	void fillWithNulls();
 
 private:
 	struct Node
@@ -137,13 +139,27 @@ private:
 		NodeData* data;
 		Node* left;
 		Node* right;
+		Node()
+		{
+			data = NULL;
+			left = NULL;
+			right = NULL;
+		}
+		Node(NodeData* someData)
+		{
+			data = someData;
+			left = NULL;
+			right = NULL;
+		}
 		~Node()
 		{
-			delete data;
-			data = NULL;
-			delete left;
+			if(data != NULL)
+			{
+				delete data;
+				data = NULL;	
+			}
+			
 			left = NULL;
-			delete right;
 			right = NULL;
 
 
@@ -203,10 +219,11 @@ private:
 	// Postconditions:  none
 	int depthHelper(const NodeData&, Node*, int)const;
 
-	void copier(Node*, Node*&);
+	BinTree::Node* copier(Node*);
 	//------------------------------  non-functional  -------------------------
 	void printTree(ostream&, Node*)const;
 	void ptrSwap(NodeData*, NodeData*);
+	void nullHelper(Node*);
 
 
 };

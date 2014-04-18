@@ -11,29 +11,33 @@ BinTree::BinTree()
 	root = NULL;
 }
 
-BinTree& BinTree::operator=(const BinTree& toCopy)
+BinTree::BinTree(const BinTree& toCopy)
 {
-	if(&toCopy == this)
-		return *this;
-	//if(!isEmpty())
-		//makeEmpty();
-	copier(toCopy.root,root);
+	root = copier(toCopy.root);
 }
 
-void BinTree::copier(Node* tree1, Node*& tree2)
+BinTree& BinTree::operator=(const BinTree& toCopy)
 {
-	if(tree1 == NULL)
-	{
-		tree2 = NULL;
-	}
+	root = copier(toCopy.root);
+	return *this;
+}
 
-	else
+BinTree::Node* BinTree::copier(Node* treePtr)
+{
+	if(treePtr != NULL)
 	{
-		tree2 = new BinTree::Node;
-		*tree2->data = *tree1->data;
-		copier(tree1->left, tree2->left);
-		copier(tree1->right, tree2->right);
+		//create and initialize the new Node
+		Node* newTreePtr = new Node;
+		newTreePtr->data = treePtr->data;
+		//set the left and right pointers
+		newTreePtr->left = copier(treePtr->left);
+		newTreePtr->right = copier(treePtr->right);
+		treePtr = newTreePtr;
+		return treePtr;
+
 	}
+	else	//else tree is empty
+		return NULL;
 }
 //-------------------------- Destructor -----------------------------------
 // Destructor for class BinTree
@@ -50,8 +54,7 @@ BinTree::~BinTree()
 // Postconditions:  all memory is returned to the OS
 void BinTree::makeEmpty()
 {
-	delete root;
-	root = NULL;
+	reclaim(root);			
 }
 //------------------------------  reclaim  --------------------------------
 // Helper method for the makeEmpty method
@@ -59,16 +62,10 @@ void BinTree::makeEmpty()
 // Postconditions:  none
 void BinTree::reclaim(Node* current)
 {
-	if(current == NULL)
-	{
-		current = 0;
-	}
-	else
+	if(current != NULL)
 	{
 		reclaim(current->left);
 		reclaim(current->right);
-		delete current->data;
-		current->data = NULL;
 		delete current;
 		current = NULL;
 	}
@@ -200,11 +197,14 @@ NodeData* BinTree::retrieveHelper(const NodeData& toFind, Node* current)const
 //					be empty after conversion to a BinTree.
 void BinTree::arrayToBSTree(NodeData* theArray[])
 {
-	treeBuilder(theArray, 0,100);
+	int numActive = 0;
 	for(int i = 0; i < 100; i++)
 	{
-		theArray[i] = NULL;
+		if(theArray[i] == NULL)
+			break;
+		numActive++;
 	}
+	root = treeBuilder(theArray, 0,numActive);
 }
 //------------------------------  treeBuilder  --------------------------
 // Helper method for the arrayToBSTree method
@@ -212,15 +212,26 @@ void BinTree::arrayToBSTree(NodeData* theArray[])
 // Postconditions:  none
 BinTree::Node* BinTree::treeBuilder(NodeData* theArray[], int start, int end)
 {
-	if(start > end)
+	if(start >= end)
 		return NULL;
 	int mid = start + (end - start) / 2;
+	if(!((start + end) % 2) && mid != 2)
+		mid = (mid + (mid - 1))/2;
+	Node* current = new Node();
 	if(theArray[mid] != NULL)
 	{
-		root->data = theArray[mid];
-		root->left = treeBuilder(theArray, start, mid-1);
-		root->right = treeBuilder(theArray, mid+1, end);	
+		current->data = new NodeData(*theArray[mid]);
+		theArray[mid] = NULL;	
+		current->left = treeBuilder(theArray, start, mid-1);
+		current->right = treeBuilder(theArray, mid+1, end);		
+		return current;
 	}
+	else
+		return NULL;
+
+	
+	
+	
 	
 }
 //------------------------------  bstreeToArray  --------------------------
@@ -235,6 +246,13 @@ BinTree::Node* BinTree::treeBuilder(NodeData* theArray[], int start, int end)
 void BinTree::bstreeToArray(NodeData* anArray[])
 {
 	arrayBuilder(0,root,anArray);
+	for(int i = 0; i < 100; i++)
+	{
+		if(anArray[i] == NULL)
+			break;
+		else
+			cout << *anArray[i] << endl;
+	}
 }
 //------------------------------  arrayBuilder  --------------------------
 // Helper method for the bstreeToArray method
@@ -242,12 +260,13 @@ void BinTree::bstreeToArray(NodeData* anArray[])
 // Postconditions:  none
 int BinTree::arrayBuilder(int index, Node* current, NodeData* theArray[])
 {
-	
 	if(current->left != NULL)
 		index = arrayBuilder(index,current->left,theArray);
 	//cout <<"inserting " << *current->data << " into index " << index << endl;
 	//ptrSwap(current->data, theArray[index++]);
-	theArray[index++] = current->data;
+	theArray[index++] = new NodeData(*current->data);
+	delete current->data;
+	current->data = NULL;
 	//current->data = NULL;
 	if(current->right != NULL)
 		index = arrayBuilder(index, current->right, theArray);	
@@ -374,4 +393,28 @@ void BinTree::printTree(ostream& out, Node* current)const
 		out << *current->data << endl;
 		printTree(out, current->right);
 	}
+}
+
+void BinTree::fillWithNulls()
+{
+	nullHelper(root);
+}
+
+void BinTree::nullHelper(Node* current)
+{
+	cout << *current->data << endl;
+	if(current != NULL)
+	{
+		cout << "current isn't null"  << endl;
+		nullHelper(current->left);
+		nullHelper(current->right);
+	}
+	delete current->data;
+	current->data = NULL;
+			
+}
+
+NodeData* BinTree::getRootData()const
+{
+	return root->data;
 }
