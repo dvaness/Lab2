@@ -155,8 +155,9 @@ private:
 		{
 			if(data != NULL)
 			{
-				delete data;
 				data = NULL;	
+				delete data;
+				
 			}
 			
 			left = NULL;

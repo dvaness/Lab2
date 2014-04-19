@@ -38,17 +38,17 @@ int main()
   tree2.displaySideways();
 
 	cout << "tree1.In order: " << endl << "-----------" << endl;
-	tree1.printInOrder();
+	cout << tree1 << endl;
 	cout << "-----------" << endl;
 	cout << "tree2.In order: " << endl << "-----------" << endl;
 	tree2.printInOrder();
 	cout << "-----------" << endl;
-  /*
+  
   BinTree tree3(tree2);
   cout << "tree3.In order: " << endl << "-----------" << endl;
   tree3.displaySideways();
   tree3.printInOrder();
-  cout << "-----------" << endl;*/
+  cout << "-----------" << endl;
 	if(tree1 != tree2)
 		cout << "tree1 is not equal to tree2!" << endl;
 	else

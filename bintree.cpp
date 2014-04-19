@@ -18,6 +18,8 @@ BinTree::BinTree(const BinTree& toCopy)
 
 BinTree& BinTree::operator=(const BinTree& toCopy)
 {
+	root = NULL;
+	delete root;
 	root = copier(toCopy.root);
 	return *this;
 }
@@ -33,6 +35,8 @@ BinTree::Node* BinTree::copier(Node* treePtr)
 		newTreePtr->left = copier(treePtr->left);
 		newTreePtr->right = copier(treePtr->right);
 		treePtr = newTreePtr;
+		newTreePtr = NULL;
+		delete newTreePtr;
 		return treePtr;
 
 	}
@@ -54,7 +58,7 @@ BinTree::~BinTree()
 // Postconditions:  all memory is returned to the OS
 void BinTree::makeEmpty()
 {
-	reclaim(root);			
+	reclaim(root);
 }
 //------------------------------  reclaim  --------------------------------
 // Helper method for the makeEmpty method
@@ -66,11 +70,11 @@ void BinTree::reclaim(Node* current)
 	{
 		reclaim(current->left);
 		reclaim(current->right);
-		delete current;
 		current = NULL;
+		delete current;
+		
 	}
 }
-
 //------------------------------  isEmpty  --------------------------------
 // Print the calling BinTree object "on its side"
 // Preconditions:   none
@@ -224,7 +228,7 @@ BinTree::Node* BinTree::treeBuilder(NodeData* theArray[], int start, int end)
 		theArray[mid] = NULL;	
 		current->left = treeBuilder(theArray, start, mid-1);
 		current->right = treeBuilder(theArray, mid+1, end);		
-		return current;
+		return current;	
 	}
 	else
 		return NULL;
@@ -265,9 +269,6 @@ int BinTree::arrayBuilder(int index, Node* current, NodeData* theArray[])
 	//cout <<"inserting " << *current->data << " into index " << index << endl;
 	//ptrSwap(current->data, theArray[index++]);
 	theArray[index++] = new NodeData(*current->data);
-	delete current->data;
-	current->data = NULL;
-	//current->data = NULL;
 	if(current->right != NULL)
 		index = arrayBuilder(index, current->right, theArray);	
 	return index;
@@ -347,52 +348,18 @@ int BinTree::depthHelper(const NodeData& toFind, Node* current, int level)const
 //------------------------------  NON-FUNCTIONAL/USEFUL METHODS  --------------
 void BinTree::ptrSwap(NodeData* lhs, NodeData* rhs)
 {
-	//lhs: theArray[index++]
-	//rhs: current->data
-	//tmp: NULL
 	NodeData* tmp = NULL;
-	// if(lhs == NULL)
-	// 	cout << "left hand side in swap: NULL" << endl;
-	// else
-	// 	cout << "left hand side in swap: " << *lhs << endl;
-
-	// if(rhs == NULL)
-	// 	cout << "right hand side in swap: NULL" << endl;
-	// else
-	// 	cout << "right hand side in swap: " << *rhs << endl;
-	// if(tmp == NULL)
-	// 	cout << "tmp in swap: NULL" << endl;
-	// else
-	// 	cout << "tmp in swap: " << *tmp << endl;
-	// cout << "------------------------------" << endl;
 	tmp = lhs;
-	//tmp = theArray[index++](NULL)
 	lhs = rhs;
-	//lhs = current->data
 	rhs = tmp;
-	//current->data = theArray[index++](NULL)
+	
 
 }
 
 ostream& operator<<(ostream& out, const BinTree& toOut)
 {
-	toOut.printHelper(out);
+	toOut.printInOrder();
 	return out;
-}
-
-void BinTree::printHelper(ostream& out)const
-{
-	printTree(out, root);
-}
-
-void BinTree::printTree(ostream& out, Node* current)const
-{
-	if(current)
-	{
-		printTree(out, current->left);
-		out << *current->data << endl;
-		printTree(out, current->right);
-	}
 }
 
 void BinTree::fillWithNulls()
