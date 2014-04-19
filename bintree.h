@@ -14,9 +14,7 @@
 //
 // Assumptions:
 //   -- only expects strings 
-//   -- 
-//   --
-//   --
+//
 //---------------------------------------------------------------------------
 
 #ifndef BIN_TREE_H
@@ -28,8 +26,12 @@
 class BinTree
 {
 public:
-	friend ostream& operator<<(ostream&, const BinTree&);
-	void printHelper(ostream&)const;
+	//-------------------------- << -------------------------------------------
+    // Overloaded output operator for BinTree class
+    // Preconditions:   None
+    // Postconditions:	None
+    friend ostream& operator<<(ostream&, const BinTree&);
+	
 	//-------------------------- Constructor ----------------------------------
     // Default constructor for class BinTree
     // Preconditions:   None
@@ -130,9 +132,7 @@ public:
 	// Preconditions:   none
 	// Postconditions:  none
 	void printInOrder()const;
-	NodeData* getRootData()const;
-	void fillWithNulls();
-
+	
 private:
 	struct Node
 	{
@@ -219,12 +219,13 @@ private:
 	// Preconditions:   none
 	// Postconditions:  none
 	int depthHelper(const NodeData&, Node*, int)const;
-
+	//------------------------------  copier  ----------------------------
+	// Handles the logic required by operator= and copy c'tor
+	// Preconditions:   none
+	// Postconditions:  none
 	BinTree::Node* copier(Node*);
-	//------------------------------  non-functional  -------------------------
-	void printTree(ostream&, Node*)const;
-	void ptrSwap(NodeData*, NodeData*);
-	void nullHelper(Node*);
+	
+	
 
 
 };

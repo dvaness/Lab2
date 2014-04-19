@@ -1,3 +1,23 @@
+//---------------------------------------------------------------------------
+// BINTREE.CPP
+// Implementation of the BinTree class with Binary Search Tree functionality
+// Author: Dallas Van Ess
+//---------------------------------------------------------------------------
+// Poly class:  includes a wide range of functionality relating to a binary
+//				search tree
+//   including:
+//   -- can be displayed in a visual way
+//   -- can be converted to an array of NodeData*
+//   -- can be converted from an array of NodeData* to a balanced BST
+//   -- can find the depth of a specific NodeData object
+//   -- can compare one BST to another.
+//
+// Assumptions:
+//   -- expects only strings
+//
+//---------------------------------------------------------------------------
+
+
 # include "bintree.h"
 
 using namespace std;
@@ -10,12 +30,20 @@ BinTree::BinTree()
 {
 	root = NULL;
 }
-
+//-------------------------- Copy -----------------------------------------
+// Copy constructor for class BinTree
+// Preconditions:   None
+// Postconditions:
+// -- a new BinTree object is created as an exact copy of the parameter.
 BinTree::BinTree(const BinTree& toCopy)
 {
 	root = copier(toCopy.root);
 }
-
+//-----------------------------  =  ---------------------------------------
+// Overloaded assignment operator
+// Preconditions:   right.ptr points to a BinTree object with at least one
+//                    non-null member
+// Postconditions:  *this is assigned the same BinTree as right
 BinTree& BinTree::operator=(const BinTree& toCopy)
 {
 	root = NULL;
@@ -23,7 +51,10 @@ BinTree& BinTree::operator=(const BinTree& toCopy)
 	root = copier(toCopy.root);
 	return *this;
 }
-
+//------------------------------  copier  ----------------------------
+// Handles the logic required by operator= and copy c'tor
+// Preconditions:   none
+// Postconditions:  none
 BinTree::Node* BinTree::copier(Node* treePtr)
 {
 	if(treePtr != NULL)
@@ -232,11 +263,6 @@ BinTree::Node* BinTree::treeBuilder(NodeData* theArray[], int start, int end)
 	}
 	else
 		return NULL;
-
-	
-	
-	
-	
 }
 //------------------------------  bstreeToArray  --------------------------
 // Convert the calling BinTree object to a sorted array of NodeData*'s
@@ -272,6 +298,15 @@ int BinTree::arrayBuilder(int index, Node* current, NodeData* theArray[])
 	if(current->right != NULL)
 		index = arrayBuilder(index, current->right, theArray);	
 	return index;
+}
+//-------------------------- << -------------------------------------------
+// Overloaded output operator for BinTree class
+// Preconditions:   None
+// Postconditions:	None
+ostream& operator<<(ostream& out, const BinTree& toOut)
+{
+	toOut.printInOrder();
+	return out;
 }
 //------------------------------  printInOrder  ---------------------------
 // Print the result of a in-order depth first traversal
@@ -345,43 +380,6 @@ int BinTree::depthHelper(const NodeData& toFind, Node* current, int level)const
 	level_down = depthHelper(toFind, current->right, level+1);
 	return level_down;
 }
-//------------------------------  NON-FUNCTIONAL/USEFUL METHODS  --------------
-void BinTree::ptrSwap(NodeData* lhs, NodeData* rhs)
-{
-	NodeData* tmp = NULL;
-	tmp = lhs;
-	lhs = rhs;
-	rhs = tmp;
-	
 
-}
 
-ostream& operator<<(ostream& out, const BinTree& toOut)
-{
-	toOut.printInOrder();
-	return out;
-}
 
-void BinTree::fillWithNulls()
-{
-	nullHelper(root);
-}
-
-void BinTree::nullHelper(Node* current)
-{
-	cout << *current->data << endl;
-	if(current != NULL)
-	{
-		cout << "current isn't null"  << endl;
-		nullHelper(current->left);
-		nullHelper(current->right);
-	}
-	delete current->data;
-	current->data = NULL;
-			
-}
-
-NodeData* BinTree::getRootData()const
-{
-	return root->data;
-}
